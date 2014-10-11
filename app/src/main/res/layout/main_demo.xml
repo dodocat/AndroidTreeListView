@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:treeView="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <org.quanqi.treelistview.TreeViewList
+        treeView:indent_width="20dp"
+        treeView:indicator_background="@android:color/black"
+        treeView:src_collapsed="@drawable/collapsed"
+        treeView:src_expanded="@drawable/expanded"
+        treeView:toggleCollapseOnItemClick="true"
+
+        android:id="@+id/mainTreeView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical"
+        android:smoothScrollbar="true"
+        treeView:indicator_gravity="right|center_vertical"/>
+</LinearLayout>
