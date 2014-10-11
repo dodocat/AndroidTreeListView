@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<declare-styleable name="TreeViewList">
+        <attr name="toggleCollapseOnItemClick" format="boolean" />
+        <attr name="treeListViewStyle" format="reference" />
 	    <attr name="collapsible" format="boolean" />
 		<attr name="src_expanded" format="reference|color" />
 		<attr name="src_collapsed" format="reference|color" />

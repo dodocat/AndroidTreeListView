@@ -12,7 +12,7 @@ import android.widget.ListView;
 
 /**
  * Tree view, expandable multi-level.
- * 
+ * <p/>
  * <pre>
  * attr ref pl.polidea.treeview.R.styleable#TreeViewList_collapsible
  * attr ref pl.polidea.treeview.R.styleable#TreeViewList_src_expanded
@@ -36,12 +36,13 @@ public class TreeViewList extends ListView {
     private Drawable indicatorBackgroundDrawable;
     private int indentWidth = 0;
     private int indicatorGravity = 0;
-    private AbstractTreeViewAdapter< ? > treeAdapter;
+    private AbstractTreeViewAdapter<?> treeAdapter;
     private boolean collapsible;
     private boolean handleTrackballPress;
+    private boolean toggleCollapseOnItemClick;
 
     public TreeViewList(final Context context, final AttributeSet attrs) {
-        this(context, attrs, R.style.treeViewListStyle);
+        this(context, attrs, R.attr.treeListViewStyle);
     }
 
     public TreeViewList(final Context context) {
@@ -49,7 +50,7 @@ public class TreeViewList extends ListView {
     }
 
     public TreeViewList(final Context context, final AttributeSet attrs,
-            final int defStyle) {
+                        final int defStyle) {
         super(context, attrs, defStyle);
         parseAttributes(context, attrs);
     }
@@ -77,6 +78,7 @@ public class TreeViewList extends ListView {
         rowBackgroundDrawable = a
                 .getDrawable(R.styleable.TreeViewList_row_background);
         collapsible = a.getBoolean(R.styleable.TreeViewList_collapsible, true);
+        toggleCollapseOnItemClick = a.getBoolean(R.styleable.TreeViewList_toggleCollapseOnItemClick, true);
         handleTrackballPress = a.getBoolean(
                 R.styleable.TreeViewList_handle_trackball_press, false);
     }
@@ -87,7 +89,7 @@ public class TreeViewList extends ListView {
             throw new TreeConfigurationException(
                     "The adapter is not of TreeViewAdapter type");
         }
-        treeAdapter = (AbstractTreeViewAdapter< ? >) adapter;
+        treeAdapter = (AbstractTreeViewAdapter<?>) adapter;
         syncAdapter();
         super.setAdapter(treeAdapter);
     }
@@ -100,18 +102,19 @@ public class TreeViewList extends ListView {
         treeAdapter.setIndicatorBackgroundDrawable(indicatorBackgroundDrawable);
         treeAdapter.setRowBackgroundDrawable(rowBackgroundDrawable);
         treeAdapter.setCollapsible(collapsible);
+        treeAdapter.setCollapseOnItemClick(toggleCollapseOnItemClick);
+
         if (handleTrackballPress) {
             setOnItemClickListener(new OnItemClickListener() {
                 @Override
-                public void onItemClick(final AdapterView< ? > parent,
-                        final View view, final int position, final long id) {
+                public void onItemClick(final AdapterView<?> parent,
+                                        final View view, final int position, final long id) {
                     treeAdapter.handleItemClick(view, view.getTag());
                 }
             });
         } else {
             setOnItemClickListener(null);
         }
-
     }
 
     public void setExpandedDrawable(final Drawable expandedDrawable) {
