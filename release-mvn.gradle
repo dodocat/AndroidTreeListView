@@ -1,5 +1,6 @@
 /*
  * Copyright 2013 Chris Banes
+ * Copyright 2014 Dodocat
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,33 +18,25 @@
 apply plugin:'maven'
 apply plugin:'signing'
 
-project.ext.set("uploadToLocal", false)
-def test = false;
-
 def isReleaseBuild() {
     return VERSION_NAME.contains("SNAPSHOT") == false
 }
 
 def getReleaseRepositoryUrl() {
-    if (project.ext.get("uploadToLocal")) return "http://192.168.16.115:8081/nexus/content/repositories/readboy/"
-
     return hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
             : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
 }
 
 def getSnapshotRepositoryUrl() {
-    if (project.ext.get("uploadToLocal")) return "http://192.168.16.115:8081/nexus/content/repositories/snapshots/"
     return hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL
             : "https://oss.sonatype.org/content/repositories/snapshots/"
 }
 
 def getRepositoryUsername() {
-    if (project.ext.get("uploadToLocal")) return "admin"
     return hasProperty('NEXUS_USERNAME') ? NEXUS_USERNAME : ""
 }
 
 def getRepositoryPassword() {
-    if (project.ext.get("uploadToLocal")) return "admin123"
     return hasProperty('NEXUS_PASSWORD') ? NEXUS_PASSWORD : ""
 }
 
@@ -122,15 +115,4 @@ afterEvaluate { project ->
         archives androidJavadocsJar
     }
 
-}
-
-
-task uploadLocal {
-    project.ext.set("uploadToLocal", true)
-    test = true
-    dependsOn(uploadArchives)
-}
-
-task uploadCentral {
-    dependsOn(uploadArchives)
 }
